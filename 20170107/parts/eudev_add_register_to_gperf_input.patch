@@ -1,0 +1,15 @@
+# Patch for Void Linux with musl,
+# void-packages, commit 76ff32d987a272df507b518f4f52cb5db4923adf
+# Package: eudev 3.2.1
+# Fixing function declaration due to changes in gperf
+--- src/udev/udev-builtin-keyboard.c.original	2017-01-07 07:41:52.956358670 +0500
++++ src/udev/udev-builtin-keyboard.c	2017-01-07 07:42:30.038354668 +0500
+@@ -28,7 +28,7 @@
+ 
+ #include "udev.h"
+ 
+-static const struct key *keyboard_lookup_key(const char *str, unsigned len);
++static const struct key *keyboard_lookup_key(register const char *str, size_t);
+ #include "keyboard-keys-from-name.h"
+ #include "keyboard-keys-to-name.h"
+ 

@@ -1,0 +1,25 @@
+# Patch for Void Linux with musl,
+# void-packages, commit 76ff32d987a272df507b518f4f52cb5db4923adf
+# Package: libpng 1.2.27
+# Upgrading version number to 1.2.28 (actual on libpng site at the moment)
+diff --git a/srcpkgs/libpng/template b/srcpkgs/libpng/template
+index fd22ef1169..c967dbbc84 100644
+--- a/srcpkgs/libpng/template
++++ b/srcpkgs/libpng/template
+@@ -1,6 +1,6 @@
+ # Template build file for 'libpng'.
+ pkgname=libpng
+-version=1.6.27
++version=1.6.28
+ revision=1
+ build_style=gnu-configure
+ makedepends="zlib-devel"
+@@ -9,7 +9,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
+ homepage="http://www.libpng.org/pub/png/libpng.html"
+ license="libpng"
+ distfiles="ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-${version}.tar.xz"
+-checksum=fca2ffd97336356cdab9bfa8936b9d6dfd580a70205e5dfead3ac42cb054b57b
++checksum=d8d3ec9de6b5db740fefac702c37ffcf96ae46cb17c18c1544635a3852f78f7a
+ 
+ post_install() {
+ 	rm -f ${DESTDIR}/usr/lib/*.la

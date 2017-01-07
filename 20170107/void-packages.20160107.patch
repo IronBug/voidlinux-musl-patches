@@ -1,0 +1,76 @@
+# Patch for Void Linux with musl,
+# void-packages, commit 76ff32d987a272df507b518f4f52cb5db4923adf
+# Fixing build from sources with musl library to avoid build errors (07.01.2017)
+
+diff --git a/srcpkgs/eudev/patches/eudev_add_register_to_gperf_input.patch 
+b/srcpkgs/eudev/patches/eudev_add_register_to_gperf_input.patch
+new file mode 100644
+index 0000000000..8376d9c2c2
+--- /dev/null
++++ b/srcpkgs/eudev/patches/eudev_add_register_to_gperf_input.patch
+@@ -0,0 +1,11 @@
++--- src/udev/udev-builtin-keyboard.c.original	2017-01-07 07:41:52.956358670 +0500
+++++ src/udev/udev-builtin-keyboard.c	2017-01-07 07:42:30.038354668 +0500
++@@ -28,7 +28,7 @@
++ 
++ #include "udev.h"
++ 
++-static const struct key *keyboard_lookup_key(const char *str, unsigned len);
+++static const struct key *keyboard_lookup_key(register const char *str, size_t);
++ #include "keyboard-keys-from-name.h"
++ #include "keyboard-keys-to-name.h"
++ 
+diff --git a/srcpkgs/gperf/patches/gperf_add_stdlib_for_size_t_in_tests.patch b/srcpkgs/gperf/patches/gperf_add_stdlib_for_size_t_in_tests.patch
+new file mode 100644
+index 0000000000..ab34366c25
+--- /dev/null
++++ b/srcpkgs/gperf/patches/gperf_add_stdlib_for_size_t_in_tests.patch
+@@ -0,0 +1,10 @@
++--- ./src/output.cc.original	2017-01-07 05:13:32.043319258 +0500
+++++ ./src/output.cc	2017-01-07 05:14:54.529310356 +0500
++@@ -2082,6 +2082,7 @@
++       printf ("' */\n");
++     }
++   printf ("\n");
+++  printf ("#include <stdlib.h>\n");
++ 
++   if (_charset_dependent
++       && (_key_positions.get_size() > 0 || option[UPPERLOWER]))
+diff --git a/srcpkgs/libcap/patches/libcap_add_register_to_gperf_input.patch b/srcpkgs/libcap/patches/libcap_add_register_to_gperf_input.patch
+new file mode 100644
+index 0000000000..c3850ac6b1
+--- /dev/null
++++ b/srcpkgs/libcap/patches/libcap_add_register_to_gperf_input.patch
+@@ -0,0 +1,11 @@
++--- ./libcap/Makefile.original	2017-01-07 07:21:47.321488783 +0500
+++++ ./libcap/Makefile	2017-01-07 07:25:13.000466586 +0500
++@@ -41,7 +41,7 @@
++ 	./_makenames > cap_names.h
++ 
++ $(GPERF_OUTPUT): cap_names.list.h
++-	perl -e 'print "struct __cap_token_s { const char *name; int index; };\n%{\nconst struct __cap_token_s *__cap_lookup_name(const char *, unsigned int);\n%}\n%%\n"; while ($$l = <>) { $$l =~ s/[\{\"]//g; $$l =~ s/\}.*// ; print $$l; }' < $< | gperf --ignore-case --language=ANSI-C --readonly --null-strings --global-table --hash-function-name=__cap_hash_name --lookup-function-name="__cap_lookup_name" -c -t -m20 $(INDENT) > $@
+++	perl -e 'print "struct __cap_token_s { const char *name; int index; };\n%{\nconst struct __cap_token_s *__cap_lookup_name(register const char *, size_t);\n%}\n%%\n"; while ($$l = <>) { $$l =~ s/[\{\"]//g; $$l =~ s/\}.*// ; print $$l; }' < $< | gperf --ignore-case --language=ANSI-C --readonly --null-strings --global-table --hash-function-name=__cap_hash_name --lookup-function-name="__cap_lookup_name" -c -t -m20 $(INDENT) > $@
++ 
++ cap_names.list.h: Makefile $(KERNEL_HEADERS)/linux/capability.h
++ 	@echo "=> making $@ from $(KERNEL_HEADERS)/linux/capability.h"
+diff --git a/srcpkgs/libpng/template b/srcpkgs/libpng/template
+index fd22ef1169..c967dbbc84 100644
+--- a/srcpkgs/libpng/template
++++ b/srcpkgs/libpng/template
+@@ -1,6 +1,6 @@
+ # Template build file for 'libpng'.
+ pkgname=libpng
+-version=1.6.27
++version=1.6.28
+ revision=1
+ build_style=gnu-configure
+ makedepends="zlib-devel"
+@@ -9,7 +9,7 @@ maintainer="Juan RP <xtraeme@voidlinux.eu>"
+ homepage="http://www.libpng.org/pub/png/libpng.html"
+ license="libpng"
+ distfiles="ftp://ftp.simplesystems.org/pub/libpng/png/src/libpng16/libpng-${version}.tar.xz"
+-checksum=fca2ffd97336356cdab9bfa8936b9d6dfd580a70205e5dfead3ac42cb054b57b
++checksum=d8d3ec9de6b5db740fefac702c37ffcf96ae46cb17c18c1544635a3852f78f7a
+ 
+ post_install() {
+ 	rm -f ${DESTDIR}/usr/lib/*.la

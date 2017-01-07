@@ -1,0 +1,14 @@
+# Patch for Void Linux with musl,
+# void-packages, commit 76ff32d987a272df507b518f4f52cb5db4923adf
+# Package: gperf 3.1
+# Include stdlib.h for size_t declaration 
+--- ./src/output.cc.original	2017-01-07 05:13:32.043319258 +0500
++++ ./src/output.cc	2017-01-07 05:14:54.529310356 +0500
+@@ -2082,6 +2082,7 @@
+       printf ("' */\n");
+     }
+   printf ("\n");
++  printf ("#include <stdlib.h>\n");
+ 
+   if (_charset_dependent
+       && (_key_positions.get_size() > 0 || option[UPPERLOWER]))
