@@ -1,0 +1,12 @@
+diff --git a/srcpkgs/eudev/patches/fix-remove_keyboard_lookup_key_def.patch b/srcpkgs/eudev/patches/fix-remove_keyboard_lookup_key_def.patch
+index f3257093c4..9d9643bf24 100644
+--- a/srcpkgs/eudev/patches/fix-remove_keyboard_lookup_key_def.patch
++++ b/srcpkgs/eudev/patches/fix-remove_keyboard_lookup_key_def.patch
+@@ -5,6 +5,7 @@
+  #include "udev.h"
+  
+ -static const struct key *keyboard_lookup_key(const char *str, unsigned len);
+++static const struct key *keyboard_lookup_key(register const char *str, size_t);
+  #include "keyboard-keys-from-name.h"
+  #include "keyboard-keys-to-name.h"
+  

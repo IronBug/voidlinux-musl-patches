@@ -1,0 +1,82 @@
+diff --git a/srcpkgs/dash/template b/srcpkgs/dash/template
+index ff101b9ad0..6dde1d5843 100644
+--- a/srcpkgs/dash/template
++++ b/srcpkgs/dash/template
+@@ -9,7 +9,7 @@ short_desc="POSIX-compliant Unix shell, much smaller than GNU bash"
+ maintainer="Juan RP <xtraeme@voidlinux.eu>"
+ homepage="http://gondor.apana.org.au/~herbert/dash/"
+ license="BSD"
+-distfiles="http://gondor.apana.org.au/~herbert/dash/files/$pkgname-$version.tar.gz"
++distfiles="/home/heretic/src/voidlinux/void-packages/hostdir/sources/dash-0.5.9.1/dash-0.5.9.1.tar.gz"
+ checksum=5ecd5bea72a93ed10eb15a1be9951dd51b52e5da1d4a7ae020efd9826b49e659
+ 
+ alternatives="
+diff --git a/srcpkgs/eudev/patches/fix-remove_keyboard_lookup_key_def.patch b/srcpkgs/eudev/patches/fix-remove_keyboard_lookup_key_def.patch
+index f3257093c4..9d9643bf24 100644
+--- a/srcpkgs/eudev/patches/fix-remove_keyboard_lookup_key_def.patch
++++ b/srcpkgs/eudev/patches/fix-remove_keyboard_lookup_key_def.patch
+@@ -5,6 +5,7 @@
+  #include "udev.h"
+  
+ -static const struct key *keyboard_lookup_key(const char *str, unsigned len);
+++static const struct key *keyboard_lookup_key(register const char *str, size_t);
+  #include "keyboard-keys-from-name.h"
+  #include "keyboard-keys-to-name.h"
+  
+diff --git a/srcpkgs/gperf/patches/gperf_add_stdlib_for_size_t_in_tests.patch b/srcpkgs/gperf/patches/gperf_add_stdlib_for_size_t_in_tests.patch
+new file mode 100644
+index 0000000000..ab34366c25
+--- /dev/null
++++ b/srcpkgs/gperf/patches/gperf_add_stdlib_for_size_t_in_tests.patch
+@@ -0,0 +1,10 @@
++--- ./src/output.cc.original	2017-01-07 05:13:32.043319258 +0500
+++++ ./src/output.cc	2017-01-07 05:14:54.529310356 +0500
++@@ -2082,6 +2082,7 @@
++       printf ("' */\n");
++     }
++   printf ("\n");
+++  printf ("#include <stdlib.h>\n");
++ 
++   if (_charset_dependent
++       && (_key_positions.get_size() > 0 || option[UPPERLOWER]))
+diff --git a/srcpkgs/libcap/patches/libcap_add_register_to_gperf_input.patch b/srcpkgs/libcap/patches/libcap_add_register_to_gperf_input.patch
+new file mode 100644
+index 0000000000..c3850ac6b1
+--- /dev/null
++++ b/srcpkgs/libcap/patches/libcap_add_register_to_gperf_input.patch
+@@ -0,0 +1,11 @@
++--- ./libcap/Makefile.original	2017-01-07 07:21:47.321488783 +0500
+++++ ./libcap/Makefile	2017-01-07 07:25:13.000466586 +0500
++@@ -41,7 +41,7 @@
++ 	./_makenames > cap_names.h
++ 
++ $(GPERF_OUTPUT): cap_names.list.h
++-	perl -e 'print "struct __cap_token_s { const char *name; int index; };\n%{\nconst struct __cap_token_s *__cap_lookup_name(const char *, unsigned int);\n%}\n%%\n"; while ($$l = <>) { $$l =~ s/[\{\"]//g; $$l =~ s/\}.*// ; print $$l; }' < $< | gperf --ignore-case --language=ANSI-C --readonly --null-strings --global-table --hash-function-name=__cap_hash_name --lookup-function-name="__cap_lookup_name" -c -t -m20 $(INDENT) > $@
+++	perl -e 'print "struct __cap_token_s { const char *name; int index; };\n%{\nconst struct __cap_token_s *__cap_lookup_name(register const char *, size_t);\n%}\n%%\n"; while ($$l = <>) { $$l =~ s/[\{\"]//g; $$l =~ s/\}.*// ; print $$l; }' < $< | gperf --ignore-case --language=ANSI-C --readonly --null-strings --global-table --hash-function-name=__cap_hash_name --lookup-function-name="__cap_lookup_name" -c -t -m20 $(INDENT) > $@
++ 
++ cap_names.list.h: Makefile $(KERNEL_HEADERS)/linux/capability.h
++ 	@echo "=> making $@ from $(KERNEL_HEADERS)/linux/capability.h"
+diff --git a/srcpkgs/xfsprogs/template b/srcpkgs/xfsprogs/template
+index 3dac38b886..a3127e13b8 100644
+--- a/srcpkgs/xfsprogs/template
++++ b/srcpkgs/xfsprogs/template
+@@ -10,7 +10,7 @@ short_desc="Utilities for managing the XFS filesystem"
+ maintainer="Juan RP <xtraeme@voidlinux.eu>"
+ license="LGPL-2.1"
+ homepage="http://xfs.org/"
+-distfiles="http://ftp.kernel.org/pub/linux/utils/fs/xfs/${pkgname}/${pkgname}-${version}.tar.xz"
++distfiles="https://www.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-4.9.0.tar.xz"
+ checksum=f1e60a9a54583dba82fa506dd9b59bdec110a968f80f507bf5f93b263af7a4df
+ 
+ do_install() {
+diff --git a/srcpkgs/xmlto/template b/srcpkgs/xmlto/template
+index 56a23a6390..f4f714a288 100644
+--- a/srcpkgs/xmlto/template
++++ b/srcpkgs/xmlto/template
+@@ -11,5 +11,5 @@ short_desc="Tool to help transform XML documents into other formats"
+ maintainer="Juan RP <xtraeme@voidlinux.eu>"
+ license="GPL-2"
+ homepage="http://cyberelk.net/tim/software/xmlto/"
+-distfiles="https://fedorahosted.org/releases/x/m/xmlto/xmlto-$version.tar.bz2"
++distfiles="http://anduin.linuxfromscratch.org/BLFS/xmlto/xmlto-$version.tar.bz2"
+ checksum=1130df3a7957eb9f6f0d29e4aa1c75732a7dfb6d639be013859b5c7ec5421276

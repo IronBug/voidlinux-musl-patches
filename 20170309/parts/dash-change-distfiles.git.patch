@@ -1,0 +1,13 @@
+diff --git a/srcpkgs/dash/template b/srcpkgs/dash/template
+index ff101b9ad0..280bc76fff 100644
+--- a/srcpkgs/dash/template
++++ b/srcpkgs/dash/template
+@@ -9,7 +9,7 @@ short_desc="POSIX-compliant Unix shell, much smaller than GNU bash"
+ maintainer="Juan RP <xtraeme@voidlinux.eu>"
+ homepage="http://gondor.apana.org.au/~herbert/dash/"
+ license="BSD"
+-distfiles="http://gondor.apana.org.au/~herbert/dash/files/$pkgname-$version.tar.gz"
++distfiles="/home/heretic/src/voidlinux/void-packages/hostdir/sources/$pkgname-$version/$pkgname-$version.tar.gz"
+ checksum=5ecd5bea72a93ed10eb15a1be9951dd51b52e5da1d4a7ae020efd9826b49e659
+ 
+ alternatives="
